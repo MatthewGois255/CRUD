@@ -6,6 +6,6 @@ const controller = require('./controllers/controllers');
 
 router.get('/carros', controller.getAll)
 router.get('/carros/:codigo', controller.getOne)
-router.post('/carro', controller.insert);
+router.post('/carros', controller.insert);
 
 module.exports = router;
