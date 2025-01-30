@@ -14,6 +14,7 @@ module.exports = {
         }
         res.json(json)
     },
+    
     getOne: async(req, res) => {
         let json = {error:'', result:{}};
 
@@ -42,6 +43,38 @@ module.exports = {
         }else {
             json.error = 'Not sent'
         }
+        res.json(json)
+    },
+
+    alter: async(req, res) => {
+        let json = {error:'', result:{}}
+
+        let codigo = req.params.codigo
+        let marca = req.body.marca
+        let modelo = req.body.modelo
+
+        // se a requisição não tiver os três parâmetros, o banco não é alterado, o que é uma vulnerabilidade (demais são ignorados)
+        if(codigo && marca && modelo){
+            await service.alter(codigo, marca, modelo)
+            // esse result tem a ver com o result da variável json que eu declarei
+            json.result = {
+                codigo,
+                marca,
+                modelo
+            }
+        }else{
+                json.error = 'Not sent'
+                //quando ocorre um erro, ele ainda devolve o objeto json, mas preenche a propriedade error com essa mensagem e result fica em branco
+            }
+            res.json(json)
+            // essa resposta entregue em json tem a ver com a variável json que eu declarei lá em cima, que também é usada duas outras vezes
+            // bom notar que ela é um objeto, mas aloca (só) o resulto que é exibido para o cliente. Esse objeto também possui a propriedade "error" que já vem vazia
+    },
+    delete: async(req, res) => {
+        let json = {error:'', result:{}}
+
+        await service.delete(req.params.codigo)
+
         res.json(json)
     }
 }

@@ -34,5 +34,25 @@ module.exports = {
             }
         )
     })
+    },
+
+    alter: (codigo, marca, modelo) => {
+        return new Promise((acc, rej) => {
+
+            db.query('UPDATE carros SET marca = ?, placa = ? WHERE codigo = ?', [marca, modelo, codigo],
+                (error, results) => {
+                    if(error){ rej(error); return; }
+                    acc(results)
+                })
+        })
+    },
+
+    delete: (codigo) => {
+        return new Promise((acc, rej) =>{
+            db.query('DELETE FROM carrros WHERE codigo = ?', [codigo], (err, res) => {
+                if(err){ rej(err)}
+                acc(res)
+            })
+        })
     }
 }
